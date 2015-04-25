@@ -12,7 +12,7 @@ var Enemy = function(x, y) {
 //However, I'll be using hardcoded values for now since there's only one enemy type.
     this.width = 80;
     this.height = 80; //Originally 171, currently being reduced to keep collision detection working.
-}
+};
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
@@ -21,13 +21,13 @@ Enemy.prototype.update = function(dt) {
     this.x += dt * (50 + (currentScore / 10)) * this.speed;
 //Use the enemy's computed speed and our delta to compute movement.
 //Monsters now move faster as your score gets higher, but start slower. 
-}
+};
 
 // Draw the enemy on the screen, required method for game.
 // This uses the provided functions in resources.js
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
+};
 
 var Player = function(x, y) {
     this.sprite = "images/char-boy.png";
@@ -35,23 +35,23 @@ var Player = function(x, y) {
     this.y = y;
     this.width = 80;
     this.height = 80; //See Enemy.height for an explanation of this value.
-}
+};
 
 Player.prototype.update = function(dt) {
 //This function doesn't do anything or even get called because of how I handle collision detection.
 //I'm leaving it in, in case I need to call a player-related function every frame(delta).
-}
+};
 
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y); //Exact same type of function as Enemy.render
-}
+};
 
 Player.prototype.handleInput = function(code) {
 //Converts keyboard input codes (mapped to words instead of IDs) into player movement. 
-    if (pauseState == false) {
+    if (pauseState === false) {
         switch (code) {
             case "left":
-                if (this.x == 0) {
+                if (this.x === 0) {
                     break;
                 } //prevent the player from moving offscreen.
                 this.x -= 100;
@@ -65,7 +65,7 @@ Player.prototype.handleInput = function(code) {
                     this.y = 375;
                     currentScore += 100;
                     console.log((1000 - (currentScore / 20)));
-                };
+                }
                 break;
             case "right":
                 if (this.x == 400) {
@@ -83,7 +83,7 @@ Player.prototype.handleInput = function(code) {
                 break;
         }
     }
-}
+};
 
 //Declaration of useful variables.
 var player = new Player(200, 375); //Player spawns at the bottom-center of the playfield.
@@ -92,14 +92,14 @@ var pauseState = false; //Used to suppress calculations when the game is paused
 var currentScore = 0; //Earned by playing well, lost by resetting the game.
 //Sound effects.
 var playerMove = new Audio("js/move.wav");
-var playerDeath = new Audio("js/dead2.wav")
+var playerDeath = new Audio("js/dead2.wav");
 
 //Generates a new enemy every second at the start. For consistency, this is not tied to the delta.
 //As the player's score increases, so does the amount of bugs on the screen.
 //It should be essentially impossible to get to 20,000 points, at which point this function breaks.
 //Spawn times should be consistent on all but the oldest and weakest computers.
 setInterval(function() {
-    pushEnemies()
+    pushEnemies();
 }, (1000 - (currentScore / 20)));
 
 function pushEnemies() {
@@ -107,16 +107,16 @@ function pushEnemies() {
 Complicated math! This generates a new Y-coord with one of the following values: 55, 135, 215.
 These correspond to the stone lanes. Also, we don't want to create more enemies if paused.
 */
-    if (pauseState == false) {
-        var enemy = new Enemy(-100, (55 + (Math.floor((Math.random() * 3)) * 80)))
+    if (pauseState === false) {
+        var enemy = new Enemy(-100, (55 + (Math.floor((Math.random() * 3)) * 80)));
         allEnemies.push(enemy);
     }
 //Removes enemies from allEnemies when they're off the screen. 
 //It waits until a bug is ~100 pixels off the screen to prevent random disappearances.
 //This should probably called somewhere else, though.
     if (allEnemies[0].x >= 600) {
-        allEnemies.shift()
-    };
+        allEnemies.shift();
+    }
 }
 
 /*A simple bounding box algorithm for collision detection.
@@ -170,7 +170,7 @@ document.addEventListener('keyup', function(e) {
 function changePauseState() {
 
 //Stops the update function from doing anything, though it still gets called.
-    if (pauseState == false) {
+    if (pauseState === false) {
         pauseState = true;
     } else pauseState = false;
 
