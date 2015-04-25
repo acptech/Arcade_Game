@@ -1,6 +1,3 @@
-frontend-nanodegree-arcade-game
-===============================
+Frogger Player Directions
 
-Students should use this rubric: https://www.udacity.com/course/viewer#!/c-ud015/l-3072058665/m-3072588797
-
-for self-checking their submission.
+Please use the arrow keys to move the player from the grass (green area) across the street to the water ( blue area). The score will go up if you are sucessfull and resets to zero if you get killed.
