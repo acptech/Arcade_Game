@@ -1,15 +1,15 @@
 // Variables applied to each of our instances go here,
 // we've provided one for you to get started
 var Enemy = function(x, y) {
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
+// The image/sprite for our enemies, this uses
+// a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
     this.x = x;
     this.y = y;
     //Added these variables for extra functionality.
     this.speed = (Math.random() * 2) + 1;
-    //It would be best to compute the width and height from the sprite.
-    //However, I'll be using hardcoded values for now since there's only one enemy type.
+//It would be best to compute the width and height from the sprite.
+//However, I'll be using hardcoded values for now since there's only one enemy type.
     this.width = 80;
     this.height = 80; //Originally 171, currently being reduced to keep collision detection working.
 }
@@ -19,8 +19,8 @@ var Enemy = function(x, y) {
 Enemy.prototype.update = function(dt) {
 
     this.x += dt * (50 + (currentScore / 10)) * this.speed;
-    //Use the enemy's computed speed and our delta to compute movement.
-    //Monsters now move faster as your score gets higher, but start slower. 
+//Use the enemy's computed speed and our delta to compute movement.
+//Monsters now move faster as your score gets higher, but start slower. 
 }
 
 // Draw the enemy on the screen, required method for game.
@@ -38,8 +38,8 @@ var Player = function(x, y) {
 }
 
 Player.prototype.update = function(dt) {
-    //This function doesn't do anything or even get called because of how I handle collision detection.
-    //I'm leaving it in, in case I need to call a player-related function every frame(delta).
+//This function doesn't do anything or even get called because of how I handle collision detection.
+//I'm leaving it in, in case I need to call a player-related function every frame(delta).
 }
 
 Player.prototype.render = function() {
@@ -47,20 +47,20 @@ Player.prototype.render = function() {
 }
 
 Player.prototype.handleInput = function(code) {
-    //Converts keyboard input codes (mapped to words instead of IDs) into player movement. 
+//Converts keyboard input codes (mapped to words instead of IDs) into player movement. 
     if (pauseState == false) {
         switch (code) {
             case "left":
                 if (this.x == 0) {
                     break;
-                } //If -> breaks prevent the player from moving offscreen.
+                } //prevent the player from moving offscreen.
                 this.x -= 100;
                 playerMove.play();
                 break;
             case "up":
                 this.y -= 84;
                 playerMove.play();
-                if (this.y <= 0) { //This conditional moves the player back to the start and increases their score.
+                if (this.y <= 0) { //moves the player back to the start and increases their score.
                     this.x = 200;
                     this.y = 375;
                     currentScore += 100;
@@ -103,17 +103,17 @@ setInterval(function() {
 }, (1000 - (currentScore / 20)));
 
 function pushEnemies() {
-    /*
-    Complicated math! This generates a new Y-coord with one of the following values: 55, 135, 215.
-    These correspond to the stone lanes. Also, we don't want to create more enemies if paused.
-    */
+/*
+Complicated math! This generates a new Y-coord with one of the following values: 55, 135, 215.
+These correspond to the stone lanes. Also, we don't want to create more enemies if paused.
+*/
     if (pauseState == false) {
         var enemy = new Enemy(-100, (55 + (Math.floor((Math.random() * 3)) * 80)))
         allEnemies.push(enemy);
     }
-    //Removes enemies from allEnemies when they're off the screen. 
-    //It waits until a bug is ~100 pixels off the screen to prevent random disappearances.
-    //This should probably called somewhere else, though.
+//Removes enemies from allEnemies when they're off the screen. 
+//It waits until a bug is ~100 pixels off the screen to prevent random disappearances.
+//This should probably called somewhere else, though.
     if (allEnemies[0].x >= 600) {
         allEnemies.shift()
     };
@@ -128,37 +128,25 @@ function pushEnemies() {
   or I may need to implement a different system, perhaps with coordinates.
 */
 function checkCollisions() {
-    //Checking for collisions with enemies first.
+//Checking for collisions with enemies first.
     for (var i = 0; i < allEnemies.length; i++) {
-        //Comparing the location of the player and each enemy.
-        //The Y coordinate check was modified because bugs can only impact from the left and right.
-        //It still needs tweaking in that regard.
+//Comparing the location of the player and each enemy.
+//The Y coordinate check was modified because bugs can only impact from the left and right.
+//It still needs tweaking in that regard.
         if (
             player.x < allEnemies[i].x + allEnemies[i].width && player.x + player.width > allEnemies[i].x
             //Due to desync in the y-values of objects, this is required to make collision detection work.
             && (player.y - allEnemies[i].y) < 10 && (player.y - allEnemies[i].y) >= -20
         ) //The second y-clause is required to prevent bugs below the player from registering as hits.
         {
-            //Uncomment this block of code if collision detection breaks.
-
-            /*
-            window.alert("You got hit by something. Probably. Debug info: Your coords are ("
-             + player.x + " , " + (player.x + player.width) + ") (" + player.y + " , "
-              + (player.y + player.height) + ")." + 
-              "The enemy's coords are (" 
-              + allEnemies[i].x + " , " + (allEnemies[i].x + allEnemies[i].width) 
-              + ") (" + allEnemies[i].y + " , "
-              + (allEnemies[i].y + allEnemies[i].height) + ").");
-            */
-
-            //Play a sound effect before resetting.
+//Play a sound effect before resetting.
             playerDeath.play();
             resetGame();
         }
 
     }
-    //You can just have a different collision loop for different types of collidables!
-    //Nothing yet, though.
+//You can just have a different collision loop for different types of collidables!
+//Nothing yet, though.
 
 }
 
@@ -181,7 +169,7 @@ document.addEventListener('keyup', function(e) {
 //See engine.js for more details.
 function changePauseState() {
 
-    //Stops the update function from doing anything, though it still gets called.
+//Stops the update function from doing anything, though it still gets called.
     if (pauseState == false) {
         pauseState = true;
     } else pauseState = false;
